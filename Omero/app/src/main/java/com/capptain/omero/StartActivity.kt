@@ -1,6 +1,7 @@
 package com.capptain.omero
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,7 +36,7 @@ enum class MeroAnimation {
     Mero2 //Mero to the right
 }
 
-class MainActivity : ComponentActivity() {
+class StartActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -55,6 +57,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Splash() {
 
+    val context = LocalContext.current
     var omikronStart by remember { mutableStateOf(OmikronAnimation.Omikron0) }
     var meroStart by remember { mutableStateOf( MeroAnimation.Mero0) }
     val transition = updateTransition(targetState = omikronStart, label = "OmikronTransition")
@@ -170,6 +173,8 @@ fun Splash() {
         meroStart = MeroAnimation.Mero2
         delay(2000)
         omikronStart = OmikronAnimation.Omikron3
+        delay(2000)
+        context.startActivity(Intent(context, AuthenticationActivity::class.java))
     }
 }
 
