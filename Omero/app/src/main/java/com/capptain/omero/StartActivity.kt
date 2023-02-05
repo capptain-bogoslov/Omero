@@ -95,7 +95,7 @@ fun Splash() {
     ) { state ->
         when (state) {
             OmikronAnimation.Omikron0, OmikronAnimation.Omikron1 -> Offset.Zero
-            OmikronAnimation.Omikron2, OmikronAnimation.Omikron3 -> Offset(x = -100f, y= -45f)
+            OmikronAnimation.Omikron2, OmikronAnimation.Omikron3 -> Offset(x = -80f, y= -45f)
         }
     }
 
