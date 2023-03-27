@@ -7,6 +7,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,7 +35,11 @@ class AuthenticationActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Logo()
+                    Column {
+                        Logo()
+                        CredentialsView()
+                    }
+
                 }
             }
         }
@@ -53,41 +59,41 @@ fun Logo() {
             tween(
                 durationMillis = 2000,
                 easing = LinearOutSlowInEasing),
-                repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse
         )
     )
-
-    Row  (
-       horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.Bottom ,
-        modifier = Modifier
-            .padding()
-            .fillMaxWidth()
-    ) {
-        Column(
+    Column {
+        Row  (
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.Bottom ,
             modifier = Modifier
-                .padding(top = 40.dp)
+                .padding()
+                .fillMaxWidth()
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.omikron300),
-                contentDescription = "Omicron",
+            Column(
                 modifier = Modifier
-                    .width(70.dp)
-                    .height(82.dp)
-                    .absoluteOffset(y = (omikronInfiniteAnimation * -1).dp)
-            )
-            Canvas(
-                modifier = Modifier
-                    .width(omikronInfiniteAnimation.dp)
-                    .height(2.dp)
-                    .align(alignment = Alignment.CenterHorizontally)
+                    .padding(top = 40.dp, bottom = 10.dp)
             ) {
-                drawRoundRect(
-                    color = Color.Gray,
+                Image(
+                    painter = painterResource(id = R.drawable.omikron300),
+                    contentDescription = "Omicron",
+                    modifier = Modifier
+                        .width(70.dp)
+                        .height(82.dp)
+                        .absoluteOffset(y = (omikronInfiniteAnimation * -1).dp)
                 )
-            }
+                Canvas(
+                    modifier = Modifier
+                        .width(omikronInfiniteAnimation.dp)
+                        .height(2.dp)
+                        .align(alignment = Alignment.CenterHorizontally)
+                ) {
+                    drawRoundRect(
+                        color = Color.Gray,
+                    )
+                }
 
-        }
+            }
             Text(
                 text = "mero",
                 fontSize = 40.sp ,
@@ -97,6 +103,23 @@ fun Logo() {
                     .padding(horizontal = 5.dp, vertical = 10.dp)
 
             )
+        }
+        Divider(color = Color.LightGray, thickness = 1.dp)
+    }
+
+}
+
+@Composable
+fun CredentialsView() {
+    Column {
+        Text(
+            text = stringResource(id = R.string.enter_app),
+            fontSize = 25.sp,
+            fontFamily = robotoFamily,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 10.dp)
+        )
     }
 }
 
@@ -104,6 +127,12 @@ fun Logo() {
 @Composable
 fun DefaultPreview2() {
     OmeroTheme {
-        Logo()
+
+        Column {
+            Logo()
+            CredentialsView()
+        }
+
+
     }
 }
