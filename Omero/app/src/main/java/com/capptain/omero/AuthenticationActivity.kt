@@ -4,12 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
@@ -20,6 +24,8 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,12 +33,13 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.capptain.omero.ui.theme.LinkBlueDark
 import com.capptain.omero.ui.theme.OmeroTheme
+import com.capptain.omero.ui.theme.PrimaryLight
+import com.capptain.omero.ui.theme.SecondaryLight
 import com.capptain.omero.ui.theme.robotoFamily
 
 
@@ -49,6 +56,7 @@ class AuthenticationActivity : ComponentActivity() {
                     Column {
                         Logo()
                         CredentialsView()
+                        ButtonsView()
                     }
 
                 }
@@ -126,12 +134,11 @@ fun CredentialsView() {
     var email = remember { mutableStateOf(TextFieldValue()) }
     var password = remember { mutableStateOf(TextFieldValue()) }
 
-
     Column {
 
         Text(
             text = stringResource(id = R.string.enter_app),
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             fontFamily = robotoFamily,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -177,25 +184,88 @@ fun CredentialsView() {
         Spacer(modifier = Modifier.height(20.dp))
 
         //Forgot password
-        Box(modifier = Modifier.fillMaxWidth()) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 10.dp)) {
             ClickableText(
                 text = AnnotatedString(stringResource(id = R.string.forgot_password)),
                 modifier = Modifier
                     .align(Alignment.Center),
                 onClick = {},
                 style = TextStyle(
-                    fontSize = 14.sp,
+                    fontSize = 15.sp,
                     fontFamily = robotoFamily,
-                    textDecoration = TextDecoration.Underline,
                     color = LinkBlueDark
                 )
             )
         }
 //        Spacer(modifier = Modifier.fillMaxHeight())
+    }
+}
 
+@Composable
+fun ButtonsView(){
 
+    val gradient1 = Brush.verticalGradient(listOf(SecondaryLight, PrimaryLight))
+    val gradient2 = Brush.verticalGradient(listOf(Color.White, Color.White))
+
+    Column(
+        Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+        //Sign in button
+        GradientButton(
+            text = stringResource(id = R.string.enter),
+            gradient = gradient1,
+            buttonTextColor = Color.White)
+
+        Text(text = stringResource(id = R.string.first_time),
+            fontSize = 15.sp,
+            fontFamily = robotoFamily,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 5.dp)
+                .align(Alignment.Start),
+            )
+
+        GradientButton(
+            text = stringResource(id = R.string.sign_up),
+            gradient = gradient2,
+            buttonTextColor = PrimaryLight)
 
     }
+
+
+
+}
+
+@Composable
+fun GradientButton(
+    text: String,
+    gradient: Brush,
+    buttonTextColor: Color,
+    onClick: () -> Unit = {},
+) {
+
+
+    Button(onClick = { onClick() },
+        Modifier
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .background(gradient, shape = RoundedCornerShape(10.dp))
+            .border(BorderStroke(1.dp, Color.Black), shape = RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(10.dp))
+        ,
+        shape = RoundedCornerShape(10.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent, contentColor = buttonTextColor)
+    ) {
+        Text(text = text,
+            fontSize = 22.sp,
+            fontFamily = robotoFamily,
+            fontWeight = FontWeight.ExtraBold)
+    }
+
 }
 
 @Preview(showBackground = true)
@@ -206,6 +276,8 @@ fun DefaultPreview2() {
         Column {
             Logo()
             CredentialsView()
+            ButtonsView()
+
         }
 
 

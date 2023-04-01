@@ -4,4 +4,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="forgot_password">Ξέχασα το password</string>
+    <string name="enter">Είσοδος</string>
+    <string name="sign_up">Εγγραφή</string>
+    <string name="first_time">Πρώτη φορά εδώ;</string>
 </resources>
