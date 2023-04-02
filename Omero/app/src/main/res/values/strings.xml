@@ -7,4 +7,9 @@
     <string name="enter">Είσοδος</string>
     <string name="sign_up">Εγγραφή</string>
     <string name="first_time">Πρώτη φορά εδώ;</string>
+    <string name="password_show">Εμφάνιση password</string>
+    <string name="password_hide">Απόκρυψη password</string>
+    <string name="or">Ή</string>
+    <string name="connect_with_social">Συνδέσου μέσω social media</string>
+
 </resources>

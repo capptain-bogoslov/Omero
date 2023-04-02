@@ -12,16 +12,23 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,7 +39,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,6 +67,9 @@ class AuthenticationActivity : ComponentActivity() {
                         Logo()
                         CredentialsView()
                         ButtonsView()
+                        DividerView()
+                        SocialMediaLogin()
+
                     }
 
                 }
@@ -132,7 +145,8 @@ fun Logo() {
 @Composable
 fun CredentialsView() {
     var email = remember { mutableStateOf(TextFieldValue()) }
-    var password = remember { mutableStateOf(TextFieldValue()) }
+    var password by rememberSaveable { mutableStateOf("") }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     Column {
 
@@ -149,14 +163,13 @@ fun CredentialsView() {
         TextField(
             value = email.value,
             onValueChange = { email.value = it },
-            placeholder = { Text(text = stringResource(id = R.string.email)) },
+            placeholder = { Text(text = stringResource(id = R.string.email), color = Color.LightGray) },
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(10.dp),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Color.White,
-                placeholderColor = Color.LightGray,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             )
@@ -166,16 +179,30 @@ fun CredentialsView() {
         
         //Password
         TextField(
-            value = password.value,
-            onValueChange = { password.value = it },
-            placeholder = { Text(text = stringResource(id = R.string.password)) },
+            value = password,
+            visualTransformation = if(passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            trailingIcon = {
+                val image = if(passwordVisible)
+                    Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
+
+                //Περιγραφή για accessibility
+                val description = if (passwordVisible) stringResource(id = R.string.password_hide) else stringResource(
+                    id = R.string.password_show)
+
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, contentDescription = description)
+                }
+            },
+            onValueChange = { password = it },
+            placeholder = { Text(text = stringResource(id = R.string.password), color = Color.LightGray) },
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(10.dp),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Color.White,
-                placeholderColor = Color.LightGray,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             )
@@ -236,9 +263,34 @@ fun ButtonsView(){
             buttonTextColor = PrimaryLight)
 
     }
+}
 
+@Composable
+fun DividerView() {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.widthIn(min = 50.dp, max = 150.dp))
+        Text(text = stringResource(id = R.string.or), fontSize = 15.sp, fontFamily = robotoFamily, modifier = Modifier.padding(horizontal = 10.dp))
+        Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.widthIn(min = 50.dp, max = 150.dp))
 
+    }
+}
 
+@Composable
+fun SocialMediaLogin() {
+    Text(
+        text = stringResource(id = R.string.connect_with_social),
+        fontSize = 18.sp,
+        fontFamily = robotoFamily,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 20.dp)
+    )
 }
 
 @Composable
@@ -277,6 +329,8 @@ fun DefaultPreview2() {
             Logo()
             CredentialsView()
             ButtonsView()
+            DividerView()
+            SocialMediaLogin()
 
         }
 
