@@ -1,5 +1,6 @@
 package com.capptain.omero
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,6 +10,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -34,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -54,6 +57,7 @@ import com.capptain.omero.ui.theme.robotoFamily
 
 
 class AuthenticationActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -76,6 +80,21 @@ class AuthenticationActivity : ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+fun showContent() {
+    val configuration = LocalConfiguration.current
+
+    when(configuration.orientation) {
+        Configuration.ORIENTATION_LANDSCAPE -> {
+
+        }
+        else -> {
+
+        }
+    }
+
 }
 
 @Composable
@@ -283,14 +302,35 @@ fun DividerView() {
 
 @Composable
 fun SocialMediaLogin() {
-    Text(
-        text = stringResource(id = R.string.connect_with_social),
-        fontSize = 18.sp,
-        fontFamily = robotoFamily,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 20.dp)
-    )
+    Column {
+        Text(
+            text = stringResource(id = R.string.connect_with_social),
+            fontSize = 18.sp,
+
+            fontFamily = robotoFamily,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 20.dp)
+        )
+
+        Row(modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly){
+            Image(painter = painterResource(id = R.drawable.google_logo), contentDescription = "google sign in", modifier = Modifier
+                .width(50.dp)
+                .height(50.dp)
+                .clickable { })
+            Image(painter = painterResource(id = R.drawable.facebook_logo), contentDescription = "google sign in", modifier = Modifier
+                .width(50.dp)
+                .height(40.dp)
+                .clickable { })
+        }
+    }
+
+
+
 }
 
 @Composable
